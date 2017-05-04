@@ -3,7 +3,7 @@
  */
 
 import {NativeModules, NativeAppEventEmitter} from 'react-native';
-import promisify from 'es6-promisify';
+import promisify from 'bluebird';
 
 const {WeiboAPI} = NativeModules;
 
