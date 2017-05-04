@@ -3,7 +3,7 @@
  */
 
 import {NativeModules, NativeAppEventEmitter} from 'react-native';
-import Promise from 'bluebird';
+import Bluebird from 'bluebird';
 
 const {WeiboAPI} = NativeModules;
 
@@ -27,7 +27,7 @@ function wrapApi(nativeFunc) {
     if (!nativeFunc) {
         return undefined;
     }
-    const promisified = Promise.promisify(nativeFunc, translateError);
+    const promisified = Bluebird.promisify(nativeFunc, translateError);
     return (...args) => {
         return promisified(...args);
     };
@@ -42,6 +42,9 @@ function waitForResponse(type) {
         }
         savedCallback = result => {
             if (result.type !== type) {
+                const err = new Error('result type not equal to type');
+                err.errCode = 400;
+                reject(err);
                 return;
             }
             savedCallback = undefined;
