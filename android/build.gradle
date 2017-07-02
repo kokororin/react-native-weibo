@@ -1,3 +1,12 @@
+import groovy.json.JsonSlurper
+
+def computeWeiboAppId() {
+    // dynamically retrieve qq app id from package.json
+    def slurper = new JsonSlurper()
+    def json = slurper.parse(file('../../../package.json'), "utf-8")
+    return json.weibo_app_id
+}
+
 apply plugin: 'com.android.library'
 
 android {
@@ -9,6 +18,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+            WB_APPID: computeWeiboAppId()
+        ]
     }
     buildTypes {
         release {
